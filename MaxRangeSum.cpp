@@ -14,7 +14,7 @@ using namespace std;
  */
 int GetRange(string data)
 {
-	int range = 0;
+	int range = -1;
 	
 	std::size_t foundSemiColon = data.find(";");
 	
@@ -26,9 +26,13 @@ int GetRange(string data)
 	else
 	{
 		range = atoi(data.substr(0,foundSemiColon).c_str());
+		
+		// error checking. range must be between 0 and 10000
+		if(range < 0 || range > 10000)
+		{
+			range = -1;
+		}
 	}
-	
-	cout << range << endl;
 	
 	return range;
 }
@@ -41,10 +45,7 @@ int main(int argc, char *argv[])
 	// a single line of data from the input file
 	string data;
 	
-	// data struct holding data from input text file
-	RangeGain input;
-	
-	int range;
+	int range = 0;
 	
 	// make sure the input file opens
 	if(ifs.is_open() == true)
@@ -55,7 +56,7 @@ int main(int argc, char *argv[])
 			
 			range = GetRange(data);
 			
-			input = ParseInput(data);
+			cout << range << endl;
 		}
 	}
 	else
