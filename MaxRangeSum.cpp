@@ -12,10 +12,12 @@ using namespace std;
  *					the range value is separated from gains/losses by abort
  *					semicolon
  */
+
 int GetRange(string data)
 {
 	int range = -1;
 	
+	//range and gains/losses are separated by a semicolon
 	std::size_t foundSemiColon = data.find(";");
 	
 	// make sure that the input data is properly formated.
@@ -35,6 +37,50 @@ int GetRange(string data)
 	}
 	
 	return range;
+} 
+
+vector<int> GetGains(string data)
+{
+	vector<int> gains;
+	
+	//range and gains/losses are separated by a semicolon
+	std::size_t foundSemiColon = data.find(";");
+	std::size_t findSpace;
+	
+	string sGains;
+	string gainValues;
+
+	// make sure that the input data is properly formated.
+	if(foundSemiColon == std::string::npos)
+	{
+		cout << "No range found! Check input file" << endl;
+	}
+	else
+	{
+		// +1 to ignore the ;
+		sGains = data.substr(foundSemiColon+1,data.size());
+		
+		findSpace = sGains.find(" ");
+		
+		while(findSpace != std::string::npos)
+		{
+			gainValues = sGains.substr(0,findSpace);
+			
+			gains.push_back(atoi(gainValues.c_str()));
+			
+			sGains = sGains.substr(findSpace+1);
+			
+			findSpace = sGains.find(" ");
+			
+			cout << gains.back() << endl;
+		}
+		
+		gains.push_back(atoi(sGains.c_str()));
+		
+		cout << gains.back() << endl;
+	}
+	
+	return gains;
 }
 
 int main(int argc, char *argv[])
@@ -47,6 +93,10 @@ int main(int argc, char *argv[])
 	
 	int range = 0;
 	
+	int index = 1;
+	
+	vector<int> gains;
+	
 	// make sure the input file opens
 	if(ifs.is_open() == true)
 	{
@@ -56,7 +106,16 @@ int main(int argc, char *argv[])
 			
 			range = GetRange(data);
 			
-			cout << range << endl;
+			if(range != -1)
+			{
+				gains = GetGains(data);
+			}
+			else
+			{
+				cout << "Error with range for input data set: " << index << endl;
+			}
+			
+			++index;
 		}
 	}
 	else
