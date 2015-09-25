@@ -1,0 +1,14 @@
+OBJS = MaxRangeSum.o
+CC = g++
+DEBUG = -g
+CFLAGS = -Wall -c $(DEBUG)
+LFLAGS = -Wall $(DEBUG)
+
+MaxRangeSum : $(OBJS)
+		   $(CC) $(LFLAGS) $(OBJS) -o MaxRangeSum
+
+MaxRangeSum.o : MaxRangeSum.cpp
+			 $(CC) $(CFLAGS) MaxRangeSum.cpp
+			 
+clean:
+	\rm *.o *~ MaxRangeSum
